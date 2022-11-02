@@ -133,8 +133,8 @@ pub mod constants {
 
     /// Maximum number of nodes in a TranslateBrowsePathsToNodeIdsRequest
     pub const MAX_NODES_PER_TRANSLATE_BROWSE_PATHS_TO_NODE_IDS: usize = 10;
-    pub const MAX_NODES_PER_READ: usize = 50;
-    pub const MAX_NODES_PER_WRITE: usize = 10;
+    pub const MAX_NODES_PER_READ: usize = 5000;
+    pub const MAX_NODES_PER_WRITE: usize = 5000;
     pub const MAX_NODES_PER_METHOD_CALL: usize = 10;
     pub const MAX_NODES_PER_BROWSE: usize = 50;
     pub const MAX_NODES_PER_REGISTER_NODES: usize = 10;
