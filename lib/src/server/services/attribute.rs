@@ -105,7 +105,7 @@ impl AttributeService {
                 };
                 response.into()
             } else {
-                warn!("ReadRequest too many nodes to read {}", nodes_to_read.len());
+                warn!("ReadRequest too many nodes to read {}: (maximum {})", nodes_to_read.len(), server_state.operational_limits.max_nodes_per_read);
                 self.service_fault(&request.request_header, StatusCode::BadTooManyOperations)
             }
         }
@@ -842,7 +842,7 @@ impl AttributeService {
                         }
                     }
                 } else {
-                    error!("Server does not support missing value in write");
+                    error!("Server does not support missing value in write: {:?}", node_to_write);
                     StatusCode::BadTypeMismatch
                 }
             } else {
@@ -850,7 +850,7 @@ impl AttributeService {
                 StatusCode::BadAttributeIdInvalid
             }
         } else {
-            warn!("Cannot find node id {}", node_to_write.node_id);
+            warn!("Cannot find node id {} for writing", node_to_write.node_id);
             StatusCode::BadNodeIdUnknown
         }
     }
