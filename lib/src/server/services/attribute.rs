@@ -779,6 +779,7 @@ impl AttributeService {
                 let index_range = node_to_write.index_range.as_ref().parse::<NumericRange>();
 
                 if !Self::is_writable(session, node, attribute_id) {
+                    error!("attempted to set read-only node: {:?}", node);
                     StatusCode::BadNotWritable
                 } else if attribute_id != AttributeId::Value && !node_to_write.index_range.is_null()
                 {
