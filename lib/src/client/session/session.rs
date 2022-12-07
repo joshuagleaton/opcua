@@ -180,6 +180,8 @@ impl Session {
             single_threaded_executor,
         );
 
+        assert!(session_state.read().id() == transport.session_id() );
+
         // This runtime is single threaded. The one for the transport may be multi-threaded
         let runtime = tokio::runtime::Builder::new_current_thread()
             .enable_all()
@@ -209,12 +211,18 @@ impl Session {
             secure_channel.clear_security_token();
         }
 
+        assert!(!self.transport.is_connected());
+
         // Create a new session state
         self.session_state = Arc::new(RwLock::new(SessionState::new(
             self.ignore_clock_skew,
             self.secure_channel.clone(),
             self.subscription_state.clone(),
         )));
+
+        //self.transport.reset(self.session_state.clone());
+
+        assert!(self.session_state.read().id() == self.transport.session_id());
 
         // Keep the existing transport, we should never drop a tokio runtime from a sync function
     }

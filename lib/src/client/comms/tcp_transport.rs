@@ -313,6 +313,19 @@ impl TcpTransport {
         }
     }
 
+    pub fn session_id(&self) -> u32 {
+        self.session_state.read().id()
+    }
+
+    pub fn reset(&mut self, session_state: Arc<RwLock<SessionState>> ) {
+        assert!(!self.is_connected());
+        self.session_state = session_state;
+
+        let session_state = trace_read_lock!(self.session_state);
+        self.connection_state = session_state.connection_state();
+        self.message_queue = session_state.message_queue.clone();
+    }
+
     /// Connects the stream to the specified endpoint
     pub fn connect(&self, endpoint_url: &str) -> Result<(), StatusCode> {
         debug_assert!(!self.is_connected(), "Should not try to connect when already connected");
