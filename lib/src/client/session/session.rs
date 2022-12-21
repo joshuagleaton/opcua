@@ -814,7 +814,7 @@ impl Session {
                 if interval > session_activity_interval {
                     match connection_state.state() {
                         ConnectionState::Processing => {
-                            info!("Session activity keep-alive request");
+                            debug!("Session activity keep-alive request");
                             let mut session_state = trace_write_lock!(session_state);
                             let request_header = session_state.make_request_header();
                             let request = ReadRequest {
